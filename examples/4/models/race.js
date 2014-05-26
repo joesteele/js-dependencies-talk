@@ -1,8 +1,8 @@
-define(function(require) {
-  var Car     = require('models/car'),
-      Audi    = require('models/audi'),
-      BMW     = require('models/bmw'),
-      Ferrari = require('models/ferrari');
+(function() {
+  var Car     = require('./car'),
+      Audi    = require('./audi'),
+      BMW     = require('./bmw'),
+      Ferrari = require('./ferrari');
 
   function Race() {
     this.$el = $(this.render());
@@ -38,5 +38,5 @@ define(function(require) {
     $('.race-container').html(new Race().$el);
   }
 
-  return Race;
-});
+  module.exports = Race;
+})();
