@@ -1,0 +1,146 @@
+/*********************************************
+ * GLOBAL STYLES
+ *********************************************/
+body {
+  background: #2f363c;
+  font-size: 16px
+}
+
+.reveal {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: auto;
+  font-weight: 200;
+  letter-spacing: -0.02em;
+  color: #fff; 
+}
+
+::selection {
+  color: #fff;
+  background: #333a40;
+  text-shadow: none; 
+}
+
+
+
+/*********************************************
+ * HEADERS
+ *********************************************/
+.reveal h1,
+.reveal h2,
+.reveal h3,
+.reveal h4,
+.reveal h5,
+.reveal h6 {
+  color: #eeeeee;
+  font-family: "Gotham Rounded", sans-serif;
+  font-weight: 500;
+  line-height: 1.25em;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  text-shadow: 0 1px 3px #000;
+}
+
+.reveal h1 {
+  font-size: 3.5em;
+  margin: 0 0 .5em !important;
+}
+.reveal h2 {
+  font-size:1.75em;
+  margin: 0 0 .75em !important;
+}
+
+.reveal h3 {
+  font-size: 1em;
+  margin: 0 0 .5em !important;
+}
+
+/*********************************************
+ * LINKS
+ *********************************************/
+.reveal a:not(.image) {
+  /* color: #fff; */
+  color: #5fb76a;
+ }
+
+
+
+
+/*********************************************
+ * Custom Styles
+ *********************************************/
+.reveal p {
+  font-size: 1.15em;
+  line-height: 1.25em;
+  margin: 0 0 1em;
+  font-weight: 300;
+}
+.reveal p.aside {
+  font-size: 0.75em;
+  font-style: italic;
+  color: #bbb;
+}
+.reveal .about {
+  list-style: none !important;
+}
+.reveal .about h2 {
+  margin-bottom: 0.5em;
+}
+.reveal .about img {
+  max-height: 96px;
+}
+.reveal .about li {
+  text-align: center;
+}
+.reveal .about .links {
+  padding: 1em 0;
+}
+.reveal pre code {
+  background: #21262a !important;
+  padding: 15px !important;
+}
+.reveal blockquote, .reveal .well {
+  background: #21262a !important;
+  font-size: .8em;
+  padding: 45px !important;
+  border-radius: 10px;
+}
+
+.reveal .middleware-row {
+  display: block;
+  width: 600px;
+  margin: 0 auto 5px;
+  overflow: hidden;
+}
+.reveal .diagram-box {
+  background: #21262a;
+  padding: 18px;
+  border-radius: 10px;
+  box-sizing: border-box;
+}
+.reveal .app-row.diagram-box {
+  background: #f1556a;
+}
+.reveal .request.diagram-box,
+.reveal .response.diagram-box,
+.reveal .up-arrow, .reveal .down-arrow {
+  display: block;
+  width: 295px;
+  text-align: center;
+}
+.reveal .request.diagram-box {
+  float: left;
+  background: #4090ba;
+}
+.reveal .response.diagram-box {
+  float: right;
+  background: #69c773;
+}
+.reveal .up-arrow, .reveal .down-arrow {
+  margin-bottom: 5px;
+}
+.reveal .down-arrow {
+  float: left;
+}
+.reveal .up-arrow {
+  float: right;
+}
