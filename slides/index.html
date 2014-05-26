@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Rack</title>
+    <title>Managing Dependencies in JS</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="stylesheet" href="css/reveal.min.css">
     <link rel="stylesheet" href="css/theme/default.css">
@@ -26,9 +26,10 @@
       <div class="slides">
 
         <section>
-          <h1>Rack</h1>
+          <img src="img/suncoast-js.jpeg"/>
+          <h2>Managing Dependencies in JavaScript</h2>
 
-          <p>A brief introduction</p>
+          <p class="aside">Tools to help you bring order to your apps</p>
         </section>
 
         <section>
@@ -55,21 +56,375 @@
         </section>
 
         <section>
-          <h1>Rack</h1>
-          <div>
-            <img class='well' src="img/rack-logo-white.png"/>
+          <h3>What do we mean by dependencies?</h3>
+
+          <div class="fragment">
+            <p>First, let's look at the problem</p>
           </div>
         </section>
 
+        <section>
+          <pre><code class="html" data-trim>
+&lt;!-- inside your index.html --&gt;
+&lt;!-- ... other html ... --&gt;
+&lt;script src=&quot;js/lib/jquery.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;js/lib/jquery.plugin1.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;js/lib/jquery.plugin2.js&quot;&gt;&lt;/script&gt;
+&lt;!-- ... 20 more jquery plugins or whatever ... --&gt;
+&lt;script src=&quot;js/lib/bootstrap.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;js/forms.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;js/modals.js&quot;&gt;&lt;/script&gt;
+&lt;!-- ... a few more application specific js modules ... --&gt;
+&lt;script src=&quot;js/helpers.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;js/util/logging.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;js/app.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;js/models/car.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;js/models/racecar.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;js/models/driver.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;js/models/race.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;js/views/race.js&quot;&gt;&lt;/script&gt;
+&lt;!-- ... other scripts ... --&gt;
+          </code></pre>
+        </section>
 
         <section>
-          <h2>What is Rack?</h2>
+          <blockquote>
+            Ha... We use Rails, we don't have to worry about that! We have
+            Asset Pipeline!
+            <br>
+            *insert smug face here*
+          </blockquote>
+          <pre><code class="html" data-trim>
+&lt;!-- inside your index.html --&gt;
+&lt;script src=&quot;js/app.js&quot;&gt;&lt;/script&gt;
+          </code></pre>
+        </section>
 
-          <p>
-            A minimal, modular, and adaptable interface for developing web
-            applications in Ruby
+        <section>
+          <h3>Hides the problem in the manifest file</h3>
+
+          <pre><code class="coffee" data-trim>
+//= require lib/jquery.js
+//= require lib/jquery.plugin1.js
+//= require lib/jquery.plugin2.js
+... 20 more jquery plugins or whatever ...
+//= require lib/bootstrap.js
+//= require forms.js
+//= require modals.js
+... a few more application specific js modules ...
+//= require helpers.js
+//= require util/logging.js
+//= require app.js
+//= require models/car.js
+//= require models/racecar.js
+//= require models/driver.js
+//= require models/race.js
+//= require views/race.js
+          </code></pre>
+        </section>
+
+        <section>
+          <blockquote>
+            Ha! Clearly you don't know the Asset Pipeline. We can just use require_tree!
+            <br>
+            *insert even more smug face here*
+          </blockquote>
+
+          <pre><code class="coffeescript" data-trim>
+//= require_tree .
+          </code></pre>
+        </section>
+
+        <section>
+          <p class="aside">modals/my_modal.js.coffee</p>
+          <pre><code class="coffeescript" data-trim>
+class MyModal
+  # modal stuff here
+          </code></pre>
+
+          <p class="aside">modals/account_modal.js.coffee</p>
+          <pre><code class="coffeescript" data-trim>
+class AccountModal extends MyModal
+  # modal stuff here
+          </code></pre>
+          <img width="100%" src="img/modal_error.png">
+
+          <div class="fragment">
+            <p>
+              AccountModal gets loaded first since they are loaded in
+              alphabetical order.
+            </p>
+          </div>
+        </section>
+
+        <section>
+          <h3>
+            This is a basic programming problem and the solution is a
+            fundamental part of programming languages already.
+          </h3>
+        </section>
+
+        <section>
+          <p class="aside">
+            Java
+          </p>
+          <pre><code class="java" data-trim>
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
+
+import org.eclipse.egit.github.core.Comment;
+import org.eclipse.egit.github.core.Gist;
+          </code></pre>
+        </section>
+
+        <section>
+          <p class="aside">
+            Objective-C
+          </p>
+          <pre><code class="objective-c" data-trim>
+#import &lt;Foundation/Foundation.h&gt;
+#import &quot;AFURLConnectionOperation.h&quot;
+#import &quot;AFURLResponseSerialization.h&quot;
+          </code></pre>
+        </section>
+
+        <section>
+          <p class="aside">
+            Python
+          </p>
+          <pre><code class="python" data-trim>
+from importlib import import_module
+import os
+
+from django.core.exceptions import ImproperlyConfigured
+from django.utils.module_loading import module_has_submodule
+from django.utils._os import upath
+          </code></pre>
+        </section>
+
+        <section>
+          <p class="aside">
+            Ruby
+          </p>
+          <pre><code class="ruby" data-trim>
+require 'active_support/core_ext/hash/except'
+require 'active_support/core_ext/hash/slice'
+          </code></pre>
+        </section>
+
+        <section>
+          <p class="aside">
+            JavaScript?
+          </p>
+          <div class="fragment">
+            <p class="aside">... in Node</p>
+            <pre><code class="javascript" data-trim>
+var util = require('util');
+var EventEmitter = require('events').EventEmitter;
+            </code></pre>
+          </div>
+        </section>
+
+        <section>
+          <h3>
+            The browser can't utilize this, because it doesn't know to resolve
+            those dependencies (...yet*). It doesn't have a file system. It only knows about
+            the assets you tell it about.
+          </h3>
+          <p class="aside">
+            * - I'll explain later some new features coming to browsers soon.
           </p>
         </section>
+
+        <section>
+          <h2>Workarounds</h2>
+
+          <div class="fragment">
+            <h2>AMD</h2>
+            <a href="http://github.com/amdjs/amdjs-api" target="_blank">github/amdjs</a>
+          </div>
+
+          <div class="fragment">
+            <h2>CommonJS</h2>
+            <a href="http://www.commonjs.org">commonjs.org</a>
+          </div>
+
+          <div class="fragment">
+            <h4>Others...</h4>
+          </div>
+        </section>
+
+        <section>
+          <h2>AMD</h2>
+          <img width="400px" style="background:white" src="img/requirejs.png">
+        </section>
+
+        <section>
+          <h2>CommonJS</h2>
+          <img src="img/browserify.png">
+        </section>
+
+        <section>
+          <h3>Require.JS</h3>
+          <pre><code class="coffeescript" data-trim>
+require ['modals/modal'], (MyModal) ->
+  class AccountModal extends MyModal
+    # custom AccountModal stuff
+          </code></pre>
+        </section>
+
+        <section>
+          <h3>Browserify</h3>
+          <pre><code class="coffeescript" data-trim>
+MyModal = require 'modals/modal'
+
+class AccountModal extends MyModal
+  # custom AccountModal stuff
+
+module.exports = AccountModal
+          </code></pre>
+        </section>
+
+        <section>
+          <h3>Require.JS with CommonJS style</h3>
+          <pre><code class="coffeescript" data-trim>
+define (require, exports, module) ->
+  MyModal = require 'modals/modal'
+
+  class AccountModal extends MyModal
+    # custom AccountModal stuff
+          </code></pre>
+
+          <p class="aside">
+            ...this style has some caveats attached
+          </p>
+        </section>
+
+        <section>
+          <pre><code class="javascript" data-trim>
+require([
+  "path/to/depdencyOne",
+  "path/to/depdencyTwo",
+  "path/to/depdencyThree"
+], function(depOne, depTwo, depThree) {
+  // do stuff with injected dependencies
+});
+          </code></pre>
+        </section>
+
+        <section>
+          <h2>Require.JS</h2>
+          <ul>
+            <li class="fragment">Made for the web</li>
+            <li class="fragment">Very flexible</li>
+            <li class="fragment">Doesn't need anything extra from a server/build system to work</li>
+            <li class="fragment">Can compile into a built distributable</li>
+            <li class="fragment">
+              Huge number of options and other features (custom paths, wrap
+              output, shims for non-AMD-compatible libs, error handling of
+              loading dependencies, custom require scopes/configs for
+              module-scoped require contexts, etc.)</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Browserify</h2>
+          <ul>
+            <li class="fragment">Simple and clean</li>
+            <li class="fragment">Intuitive - it matches what we see with Node</li>
+            <li class="fragment">Easy (Require.JS's options can be confusing)</li>
+            <li class="fragment">Requires a build process or server middleware</li>
+          </ul>
+          <p class="fragment aside">I prefer Browserify</p>
+        </section>
+
+        <section>
+          <h3>Let's see them in action!</h3>
+          <h2>DEMO TIME!</h2>
+        </section>
+
+        <section>
+          <iframe width="100%" height="300px" src="/examples/1/index.html"></iframe>
+          <p class="aside">
+            Example #1
+          </p>
+        </section>
+
+        <section>
+          <pre><code class="javascript" data-trim>
+function Car(el) {
+  this.$el = $(el);
+  this.width = this.$el.width();
+
+  this.speed = 50;
+
+  this.$el.on('click', $.proxy(this.drive, this));
+}
+
+// ....
+
+$('.car').each(function() {
+  new Car(this);
+});
+          </code></pre>
+        </section>
+        <section>
+          <pre><code class="javascript" data-trim>
+// ....
+Car.baseDuration = 2000;
+Car.resetDelay = 1000;
+
+Car.prototype.drive = function() {
+  var car = this;
+  var duration = Car.baseDuration / car.speed * 100;
+  car.$el.velocity({
+    left: $('body').width() + car.width
+  }, {
+    duration: duration,
+    complete: function() {
+      setTimeout(function() {
+        car.$el.css({left: 0});
+      }, Car.resetDelay);
+    }
+  });
+}
+          </code></pre>
+        </section>
+
+        <section>
+          <pre><code class="html" data-trim>
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;/examples/css/main.css&quot;/&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+
+    &lt;div class=&quot;car&quot;&gt;
+      &lt;div class=&quot;top&quot;&gt;&lt;/div&gt;
+      &lt;div class=&quot;body&quot;&gt;&lt;/div&gt;
+      &lt;div class=&quot;wheel wheel-left&quot;&gt;&lt;/div&gt;&lt;div class=&quot;wheel wheel-right&quot;&gt;&lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;script src=&quot;/examples/js/jquery.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;/examples/js/jquery.velocity.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;main.js&quot;&gt;&lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+          </code></pre>
+        </section>
+
+        <section>
+          <h2>Ooh, let's make a race!</h2>
+        </section>
+
+        <section>
+          <iframe width="100%" height="300px" src="/examples/4/index.html"></iframe>
+          <p class="aside">
+            Example #4
+          </p>
+        </section>
+
 
         <section>
           <h2>What is Rack?</h2>
@@ -623,4 +978,3 @@ end
     </script>
   </body>
 </html>
-
