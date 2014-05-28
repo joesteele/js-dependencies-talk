@@ -158,10 +158,8 @@ class AccountModal extends MyModal
         </section>
 
         <section>
-          <h3>
-            This is a basic programming problem and the solution is a
-            fundamental part of programming languages already.
-          </h3>
+          <h2>This is a pretty basic problem.</h2>
+          <h3>Let's look at how other languages solve it.</h3>
         </section>
 
         <section>
@@ -297,19 +295,33 @@ define (require, exports, module) ->
           </code></pre>
 
           <p class="aside">
-            ...this style has some caveats attached
+            ...this style has some caveats
           </p>
         </section>
 
         <section>
+          <p class="aside">
+            RequireJS - Breaking it down
+          </p>
           <pre><code class="javascript" data-trim>
 require([
-  "path/to/depdencyOne",
-  "path/to/depdencyTwo",
-  "path/to/depdencyThree"
+  "path/to/depdencyOne", // here's the path to the first thing I need
+  "path/to/depdencyTwo", // ...and the second
+  "path/to/depdencyThree" // ...and the third
 ], function(depOne, depTwo, depThree) {
+  // RequireJS loads them, then calls your callback passing in
+  // your dependencies in the order you specified them.
+
   // do stuff with injected dependencies
 });
+          </code></pre>
+        </section>
+
+        <section>
+          <h2>Each dependency is loaded individually by default</h2>
+          <h3>Can be compiled into a build using r.js</h3>
+          <pre><code class="bash" data-trim>
+r.js -o buildconfig.js
           </code></pre>
         </section>
 
@@ -329,18 +341,69 @@ require([
         </section>
 
         <section>
+          <p class="aside">
+            Browserify - Breaking it down
+          </p>
+          <pre><code class="javascript" data-trim>
+var util = require('util'); // require your dependency
+
+// use your dependency
+thing.formattedTimestamp = util.formatTimestamp(thing.timestamp);
+
+module.exports = thing; // make your thing available to be required
+          </code></pre>
+        </section>
+
+        <section>
+          <h2>Always compiled into a build</h2>
+          <h3>
+            Done on the fly via server middleware, via command line, or part of
+            build tools/workflow (e.g. grunt/gulp).
+          </h3>
+          <pre><code class="bash" data-trim>
+browserify main.js > build.js
+          </code></pre>
+        </section>
+
+        <section>
+          <h2>Can apply transforms<h2>
+          <h3>Works with CoffeeScript</h3>
+<pre><code class="bash" data-trim>
+browserify -t coffeeify main.coffee > build.js
+</code></pre>
+          <h3>Works with Bower</h3>
+<pre><code class="bash" data-trim>
+browserify -t debowerify main.js > build.js
+</code></pre>
+        </section>
+
+        <section>
+          <h2>Bower</h2>
+          <img height="100px" src="img/bower-logo.png">
+          <p>
+            Not a perfect solution, but attempts to solve the problem of a
+            central repository for frontend web libraries.
+          </p>
+          <a href="http://bower.io">bower.io</a>
+        </section>
+
+        <section>
           <h2>Browserify</h2>
           <ul>
-            <li class="fragment">Simple and clean</li>
-            <li class="fragment">Intuitive - it matches what we see with Node</li>
-            <li class="fragment">Easy (Require.JS's options can be confusing)</li>
+            <li class="fragment">Simple, clean, and intuitive</li>
+            <li class="fragment">Has powerful API that you can extend</li>
+            <li class="fragment">
+              Long list of available transforms (see
+              <a href="https://github.com/substack/node-browserify/wiki/list-of-transforms"
+                target="_blank">list of transforms</a>)
+            </li>
             <li class="fragment">Requires a build process or server middleware</li>
           </ul>
           <p class="fragment aside">I prefer Browserify</p>
         </section>
 
         <section>
-          <h3>Let's see them in action!</h3>
+          <h3>Let's see how an example of using them!</h3>
           <h2>DEMO TIME!</h2>
         </section>
 
@@ -352,6 +415,30 @@ require([
         </section>
 
         <section>
+          <small>index.html</small>
+          <pre><code class="html" data-trim>
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;/examples/css/main.css&quot;/&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+
+    &lt;div class=&quot;car&quot;&gt;
+      &lt;div class=&quot;top&quot;&gt;&lt;/div&gt;
+      &lt;div class=&quot;body&quot;&gt;&lt;/div&gt;
+      &lt;div class=&quot;wheel wheel-left&quot;&gt;&lt;/div&gt;&lt;div class=&quot;wheel wheel-right&quot;&gt;&lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;script src=&quot;/examples/js/jquery.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;/examples/js/jquery.velocity.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;main.js&quot;&gt;&lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+          </code></pre>
+        </section>
+
+        <section>
+          <small>main.js</small>
           <pre><code class="javascript" data-trim>
 function Car(el) {
   this.$el = $(el);
@@ -369,7 +456,9 @@ $('.car').each(function() {
 });
           </code></pre>
         </section>
+
         <section>
+          <small>main.js</small>
           <pre><code class="javascript" data-trim>
 // ....
 Car.baseDuration = 2000;
@@ -393,49 +482,407 @@ Car.prototype.drive = function() {
         </section>
 
         <section>
+          <h2>That car is boring, let's race some real cars!</h2>
+        </section>
+
+        <section>
+          <iframe width="100%" height="300px" src="/examples/2/index.html"></iframe>
+          <p class="aside">
+            Example #2 - RACING!!!
+          </p>
+        </section>
+
+        <section>
+          <small>index.html</small>
+          <pre><code class="html" data-trim>
+&lt;div class=&quot;racetrack&quot;&gt;
+  &lt;div class=&quot;car&quot;&gt;<!-- same as before -->&lt;/div&gt;
+
+  &lt;div class=&quot;audi car&quot;&gt;<!-- same as before -->&lt;/div&gt;
+
+  &lt;div class=&quot;bmw car&quot;&gt;<!-- same as before -->&lt;/div&gt;
+
+  &lt;div class=&quot;ferrari car&quot;&gt;<!-- same as before -->&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;button class=&quot;race-btn&quot;&gt;Race!&lt;/button&gt;
+          </code></pre>
+        </section>
+
+        <section>
+          <small>main.js</small>
+          <pre><code class="javascript" data-trim>
+$.extend(Audi.prototype, Car.prototype);
+function Audi(el) {
+  Car.call(this, el);
+  this.speed = 125;
+}
+
+$.extend(BMW.prototype, Car.prototype);
+function BMW(el) {
+  Car.call(this, el);
+  this.speed = 150;
+}
+
+$.extend(Ferrari.prototype, Car.prototype);
+function Ferrari(el) {
+  Car.call(this, el);
+  this.speed = 200;
+}
+          </code></pre>
+        </section>
+
+        <section>
+          <small>main.js</small>
+          <pre><code class="javascript" data-trim>
+function Race(cars) {
+  this.cars = cars;
+  this.start = $.proxy(this.start, this);
+}
+
+Race.prototype.start = function() {
+  $.each(this.cars, function(index, car) {
+    car.drive();
+  });
+}
+          </code></pre>
+        </section>
+
+        <section>
+          <small>main.js</small>
+          <pre><code class="javascript" data-trim>
+Race.init = function() {
+  var cars = [];
+
+  $('.car').each(function() {
+    var el = $(this);
+    if (el.hasClass('audi')) {
+      cars.push(new Audi(this));
+    } else if (el.hasClass('bmw')) {
+      cars.push(new BMW(this));
+    } else if (el.hasClass('ferrari')) {
+      cars.push(new Ferrari(this));
+    } else {
+      cars.push(new Car(this));
+    }
+  });
+
+  var race = new Race(cars);
+  $('.race-btn').on('click', race.start);
+
+  return race;
+}
+
+Race.init();
+          </code></pre>
+        </section>
+
+        <section>
+          <iframe width="100%" height="300px" src="/examples/3/index.html"></iframe>
+          <p class="aside">
+            Example #3 - with RequireJS
+          </p>
+        </section>
+
+        <section>
+          <small>index.html</small>
           <pre><code class="html" data-trim>
 &lt;html&gt;
   &lt;head&gt;
     &lt;link rel=&quot;stylesheet&quot; href=&quot;/examples/css/main.css&quot;/&gt;
   &lt;/head&gt;
   &lt;body&gt;
-
-    &lt;div class=&quot;car&quot;&gt;
-      &lt;div class=&quot;top&quot;&gt;&lt;/div&gt;
-      &lt;div class=&quot;body&quot;&gt;&lt;/div&gt;
-      &lt;div class=&quot;wheel wheel-left&quot;&gt;&lt;/div&gt;&lt;div class=&quot;wheel wheel-right&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;race-container&quot;&gt;
     &lt;/div&gt;
-
-    &lt;script src=&quot;/examples/js/jquery.js&quot;&gt;&lt;/script&gt;
-    &lt;script src=&quot;/examples/js/jquery.velocity.js&quot;&gt;&lt;/script&gt;
-    &lt;script src=&quot;main.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;/examples/js/require.js&quot; data-main=&quot;main.js&quot;&gt;&lt;/script&gt;
   &lt;/body&gt;
 &lt;/html&gt;
           </code></pre>
         </section>
 
         <section>
-          <h2>Ooh, let's make a race!</h2>
+          <small>main.js</small>
+          <pre><code class="javascript">
+require(['config'], function(config) {
+  require.config(config);
+
+  require(['jquery', 'velocity'], function() {
+    require(['models/race'], function(Race) {
+      Race.init();
+    });
+  });
+});
+          </code></pre>
         </section>
 
         <section>
-          <iframe width="100%" height="300px" src="/examples/2/index.html"></iframe>
-          <p class="aside">
-            Example #2
-          </p>
+          <small>config.js</small>
+          <pre><code class="javascript">
+define(function() {
+  return {
+    baseUrl: '/examples/3',
+    shim: {
+      'jquery': {
+        exports: ['$', 'jQuery']
+      },
+      'velocity': {
+        deps: ['jquery']
+      }
+    },
+    paths: {
+      'jquery': '../js/jquery',
+      'velocity': '../js/jquery.velocity'
+    }
+  }
+});
+          </code></pre>
         </section>
 
         <section>
-          <iframe width="100%" height="300px" src="/examples/3/index.html"></iframe>
-          <p class="aside">
-            Example #3
-          </p>
+          <small>models/race.js</small>
+          <pre><code class="javascript">
+define(function(require) {
+  var Car     = require('models/car'),
+      Audi    = require('models/audi'),
+      BMW     = require('models/bmw'),
+      Ferrari = require('models/ferrari');
+
+  function Race() {
+    this.$el = $(this.render());
+
+    this.cars = [];
+    this.cars.push(new Car());
+    this.cars.push(new Audi());
+    this.cars.push(new BMW());
+    this.cars.push(new Ferrari());
+
+    var $el = this.$el;
+    $.each(this.cars, function(i, car) {
+      $el.find('.racetrack').append(car.$el);
+    });
+
+    this.$el.find('.race-btn').on('click', $.proxy(this.start, this));
+  }
+  //...
+          </code></pre>
+        </section>
+
+        <section>
+          <small>models/race.js</small>
+          <pre><code class="javascript">
+  //...
+  Race.prototype.start = function() {
+    $.each(this.cars, function(index, car) {
+      car.drive();
+    });
+  }
+
+  Race.prototype.render = function() {
+    return &quot;&lt;div class=&#39;race&#39;&gt;&quot;
+         + &quot;  &lt;div class=&#39;racetrack&#39;&gt;&lt;/div&gt;&quot;
+         + &quot;  &lt;button class=&#39;race-btn&#39;&gt;Race!&lt;/button&gt;&quot;
+         + &quot;&lt;/div&gt;&quot;;
+  }
+
+  Race.init = function() {
+    $(&#39;.race-container&#39;).html(new Race().$el);
+  }
+
+  return Race;
+});
+          </code></pre>
+        </section>
+
+        <section>
+          <small>models/car.js</small>
+          <pre><code class="javascript" data-trim>
+define(function() {
+  function Car(el) {
+    this.$el = $(this.render());
+    this.width = this.$el.width();
+
+    this.speed = 50;
+
+    this.reset = $.proxy(this.reset, this);
+    this.$el.on('click', $.proxy(this.drive, this));
+  }
+
+  // same as before
+
+  Car.prototype.render = function() {
+    return &quot;&lt;div class=&#39;car&#39;&gt;&quot;
+         + &quot;  &lt;div class=&#39;top&#39;&gt;&lt;/div&gt;&quot;
+         + &quot;  &lt;div class=&#39;body&#39;&gt;&lt;/div&gt;&quot;
+         + &quot;  &lt;div class=&#39;wheel wheel-left&#39;&gt;&lt;/div&gt;&lt;div class=&#39;wheel wheel-right&#39;&gt;&lt;/div&gt;&quot;
+         + &quot;&lt;/div&gt;&quot;;
+  }
+
+  return Car;
+});
+          </code></pre>
+        </section>
+
+        <section>
+          <small>models/audi.js</small>
+          <pre><code class="javascript" data-trim>
+define(['models/car'], function(Car) {
+  $.extend(Audi.prototype, Car.prototype);
+
+  function Audi(el) {
+    Car.call(this, el);
+    this.$el.addClass('audi');
+    this.speed = 100;
+  }
+
+  return Audi;
+});
+          </code></pre>
         </section>
 
         <section>
           <iframe width="100%" height="300px" src="/examples/4/index.html"></iframe>
           <p class="aside">
-            Example #4
+            Example #4 - with Browserify
+          </p>
+        </section>
+
+        <section>
+          <small>index.html</small>
+          <pre><code class="html" data-trim>
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;/examples/css/main.css&quot;/&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;div class=&quot;race-container&quot;&gt;
+    &lt;/div&gt;
+    &lt;script src=&quot;build.js&quot;&gt;&lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+          </code></pre>
+        </section>
+
+        <section>
+          <small>main.js</small>
+          <pre><code class="javascript" data-trim>
+window.$ = window.jQuery = require('../js/jquery');
+require('../js/jquery.velocity');
+
+var Race = require('./models/race');
+
+Race.init();
+          </code></pre>
+        </section>
+
+        <section>
+          <small>models/race.js</small>
+          <pre><code class="javascript" data-trim>
+var Car     = require('./car'),
+    Audi    = require('./audi'),
+    BMW     = require('./bmw'),
+    Ferrari = require('./ferrari');
+
+// ... same as previous
+
+module.exports = Race;
+          </code></pre>
+        </section>
+
+        <section>
+          <small>models/car.js</small>
+          <pre><code class="javascript" data-trim>
+function Car(el) {
+  // ... same as before
+}
+
+// same as before
+
+module.exports = Car;
+          </code></pre>
+
+          <small>models/audi.js</small>
+          <pre><code class="javascript" data-trim>
+var Car = require('./car');
+
+$.extend(Audi.prototype, Car.prototype);
+
+function Audi(el) {
+  Car.call(this, el);
+  this.$el.addClass('audi');
+  this.speed = 100;
+}
+
+module.exports = Audi;
+          </code></pre>
+        </section>
+
+        <section>
+          <h3>These examples are contrived.</h3>
+          <p>For better examples look to GitHub</p>
+          <p class="aside">
+            Popular repositories using these tools
+          </p>
+          <ul>
+            <li><a href="https://github.com/adobe/brackets">Brackets</a> - RequireJS</li>
+            <li><a href="https://github.com/atom/atom">Atom</a> - Browserify</li>
+          </ul>
+          <p class="aside">
+            Both are full-featured editors using HTML, CSS, and JS!
+          </p>
+        </section>
+
+        <section>
+          <h3>A note about Ember/Angular</h3>
+          <p>
+            While both of these frameworks can benefit from these tools,
+            they've each taken steps to minimize some of the pains initially
+            described above through dependency injection and convention.
+          </p>
+        </section>
+
+        <section>
+          <h3>Dependency Injection - What is it?</h3>
+          <p>
+            In essence, it's just a way for you to ask for a dependency and have
+            your code or tools provide it for you automatically through some
+            specified convention or contract.
+          </p>
+          <p class="aside">
+            We saw this clearly when breaking down our RequireJS example.
+          </p>
+        </section>
+
+        <section>
+          <h2>ES6 - The Future</h2>
+          <pre><code class="javascript" data-trim>
+import Car from 'models/car';
+
+$.extend(Audi.prototype, Car.prototype);
+
+function Audi(el) {
+  Car.call(this, el);
+  this.$el.addClass('audi');
+  this.speed = 100;
+}
+
+export default Audi;
+          </code></pre>
+          <p class="aside">
+            (just search 'es6 modules' for more examples)
+          </p>
+        </section>
+
+        <section>
+          <h2>ES6 Modules</h2>
+          <h3>The Future Today!</h3>
+          <p>
+            If you are adventurous, you can utilize one of the ES6 module
+            transpilers out there to take advantage of ES6-style modules in your
+            projects today.
+          </p>
+          <p class="aside">
+            <a href="https://github.com/stefanpenner/ember-cli" target="_blank">ember-cli</a>
+            is already using them!
           </p>
         </section>
 
